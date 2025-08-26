@@ -1,0 +1,69 @@
+﻿@model EntityLayer.Concrete.Category
+
+@{
+    ViewBag.Title = "CategoryEdit";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<br />
+
+@using (Html.BeginForm("CategoryEdit", "Category", FormMethod.Post, new { enctype = "multipart/form-data", id = "CategoryEdit_" + Model.CategoryID }))
+{
+    <div class="form-group">
+        @Html.HiddenFor(x => x.CategoryID)
+
+        @Html.Label("Kategori Adı")
+        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CategoryName)
+        <br />
+
+        @Html.Label("Kategori Açıklaması")
+        @Html.TextAreaFor(x => x.CategoryDescription, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CategoryDescription)
+        <br />
+
+        @Html.Label("Kategori Resmi")
+        <input type="file" id="CategoryImage" name="CategoryImage" class="form-control" />
+        <br />
+
+        <div class="form-group" style="display: flex; gap: 20px;">
+            <!-- Current Image -->
+            <div>
+                @if (!string.IsNullOrEmpty(Model.CategoryImage))
+                {
+                    <div>
+                        <label>Mevcut Resim:</label><br />
+                        <img src="@Url.Content(Model.CategoryImage)" alt="Category Image"
+                             style="width: 300px; height: 300px; border: 1px solid #ddd; padding: 5px; margin-bottom: 10px;" />
+                    </div>
+                }
+            </div>
+
+            <!-- Preview Image -->
+            <div>
+                <label>Güncellenecek Resim:</label><br />
+                <img id="imagePreview" src="#" alt="Resim Önizlemesi" style="width: 300px; height: 300px; display: none; border: 1px solid #ddd; padding: 5px; margin-bottom: 10px;" />
+            </div>
+        </div>
+
+
+        <br />
+        <button class="btn btn-success mt-3">
+            <i class="fa fa-save"></i> Güncelle
+        </button>
+    </div>
+}
+
+<script>
+    document.getElementById('CategoryImage').addEventListener('change', function (e) {
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            var image = document.getElementById('imagePreview');
+            image.src = event.target.result;
+            image.style.display = 'block';
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+    });
+</script>

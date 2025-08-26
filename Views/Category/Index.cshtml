@@ -1,0 +1,70 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_menuLayout.cshtml";
+}
+<style>
+    .custom-img {
+        width: 250px !important;
+        height: 250px !important;
+        object-fit: cover !important;
+    }
+</style>
+
+<div class="parallax-window" data-parallax="scroll" data-image-src="/2126_antique_cafe/img/antique-cafe-bg-04.jpg">
+
+    <div id="menu" class="parallax-window" data-parallax="scroll">
+        <div class="container mx-auto tm-container py-24 sm:py-48">
+            <div class="flex flex-col items-center gap-12">
+                @foreach (var item in Model)
+                {
+                    if (item.CategoryStatus)
+                    {
+                        <div class="tm-bg-brown text-white p-8 rounded-xl shadow-lg w-full max-w-4xl h-auto flex flex-row items-center clickable-category"
+                             style="margin-bottom:10px; cursor: pointer;"
+                             data-url="@Url.Action("Index", "Product", new { categoryID = item.CategoryID })">
+
+                            @if (!string.IsNullOrEmpty(item.CategoryImage))
+                            {
+                                <img src="@Url.Content(item.CategoryImage)" alt="@item.CategoryName" class="custom-img rounded-full object-cover mr-8">
+                            }
+                            <div class="flex flex-col items-start">
+                                <h3 class="tm-text-yellow text-3xl font-semibold">
+                                    @item.CategoryName
+                                </h3>
+                                <p class="tm-text-gold text-xl text-left mt-3">
+                                    @item.CategoryDescription
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".clickable-category").forEach(function (element) {
+            element.addEventListener("click", function () {
+                var url = this.getAttribute("data-url");
+                window.location.href = url;
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

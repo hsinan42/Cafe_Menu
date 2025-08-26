@@ -1,0 +1,57 @@
+﻿@model EntityLayer.Concrete.Product
+
+@{
+    ViewBag.Title = "ProductAdd";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<link href="~/Styles/AdminStyle.css" rel="stylesheet" />
+
+<br />
+
+@using (Html.BeginForm("ProductAdd", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.Label("Kategori")
+        @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.vlp, new { @class = "form-control", placeholder = "Kategori seçiniz" })
+        <br />
+        @Html.Label("Ürün Adı")
+        @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control", placeholder = "Ürün adını giriniz" })
+        @Html.ValidationMessageFor(x => x.ProductName)
+        <br />
+        @Html.Label("Ürün Açıklaması")
+        @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control", placeholder = "Ürün açıklamasını giriniz" })
+        @Html.ValidationMessageFor(x => x.ProductDescription)
+        <br />
+        @Html.Label("Ürün Fiyatı")
+        @Html.TextAreaFor(x => x.ProductPrice, new { @class = "form-control", placeholder = "Ürün fiyatını giriniz" })
+        @Html.ValidationMessageFor(x => x.ProductPrice)
+        <br />
+
+        @Html.Label("Kategori Resmi")
+        <input type="file" id="ProductImage" name="ProductImage" class="form-control" />
+        @Html.ValidationMessageFor(x => x.ProductImage)
+        <br />
+
+        <div>
+            <label>Resim Önizleme:</label><br />
+            <img id="imagePreview" src="#" alt="Resim Önizlemesi" style="width: 300px; height: 300px; display: none; border:1px solid #ddd; padding:5px; margin-bottom:10px;" />
+        </div>
+    </div>
+
+    <button class="btn-custom">Kaydet</button>
+}
+
+<script>
+    document.getElementById('ProductImage').addEventListener('change', function (e) {
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            var image = document.getElementById('imagePreview');
+            image.src = event.target.result;
+            image.style.display = 'block';
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+    });
+</script>

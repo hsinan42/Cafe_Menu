@@ -1,0 +1,53 @@
+﻿@using EntityLayer.Concrete
+@model List<Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_menuLayout.cshtml";
+}
+
+
+<div class="parallax-window" data-parallax="scroll" data-image-src="/2126_antique_cafe/img/antique-cafe-bg-01.jpg">
+    <div id="menu" class="parallax-window" data-parallax="scroll">
+        <div class="container mx-auto tm-container py-24 sm:py-48">
+            <div class="flex flex-col items-center gap-12">
+                @foreach (var item in Model)
+                {
+                    if (item.ProductStatus)
+                    {
+                        <div class="tm-bg-brown text-white p-8 rounded-xl shadow-lg w-full max-w-4xl h-auto flex flex-row items-center" style="margin-bottom:10px;">
+                            @if (!string.IsNullOrEmpty(item.ProductImage))
+                            {
+                                <img src="@Url.Content(item.ProductImage)" alt="@item.ProductName" class="custom-img rounded-full object-cover mr-8">
+                            }
+                            <div class="flex flex-col items-start">
+                                <h3 class="tm-text-yellow text-3xl font-semibold"> @item.ProductName </h3>
+                                <p class="tm-text-gold text-xl text-left mt-3">
+                                    @item.ProductDescription
+                                </p>
+                                <p class="tm-text-gold text-xl text-left mt-3">
+                                    @item.ProductPrice TL
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
+                <a href="/Category/Index">
+                    <button class="custom-orange text-white p-8 rounded-xl shadow-lg h-auto flex flex-row items-center">Geri Dön</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-orange {
+        background-color: #D09637;
+    }
+
+    .custom-img {
+        width: 250px !important;
+        height: 250px !important;
+        object-fit: cover !important;
+    }
+</style>

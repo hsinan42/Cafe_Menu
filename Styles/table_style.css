@@ -1,0 +1,43 @@
+﻿.table th {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+.img-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.badge-category-blueviolet {
+    background-color: blueviolet;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    display: inline-block;
+}
+.badge-category-blue {
+    background-color: darkblue;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.action-btn {
+    margin: 4px 2px;
+    padding: 10px 16px !important;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    width: 100px;
+}

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "AdminHome";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<style>
+    .admin-dashboard {
+        max-width: 1200px;
+        padding: 60px;
+        background: white;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        margin-left: 240px
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            color: #333;
+            font-weight: bold;
+        }
+
+    .dashboard-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .products {
+        background: linear-gradient(to right, #007bff, #0056b3);
+        color: white;
+    }
+
+    .categories {
+        background: linear-gradient(to right, #ffc107, #d39e00);
+        color: white;
+    }
+</style>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>Admin Paneline Hoşgeldiniz</h1>
+        <p style="font-size: 18px; color: #555;">Buradan ürün ve kategorileri yönetebilirsiniz.</p>
+    </div>
+
+    <div class="dashboard-buttons">
+        <div class="dashboard-card products" onclick="location.href='/Product/Products'">
+            Ürünlere Git
+        </div>
+        <div class="dashboard-card categories" onclick="location.href='/Category/Categories'">
+            Kategorilere Git
+        </div>
+    </div>
+</div>

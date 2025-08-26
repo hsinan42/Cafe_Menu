@@ -1,0 +1,148 @@
+﻿@using EntityLayer.Concrete
+@model List<Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Styles/table_style.css" rel="stylesheet" />
+
+<br />
+<h2 class="text-center my-4">Ürün Listesi</h2>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr style="font-size: larger;">
+            <th>Ürün Resmi</th>
+            <th>Ürün Adı</th>
+            <th>Ürün Kategorisi</th>
+            <th>Ürün Açıklaması</th>
+            <th>Fiyat</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="font-weight: 500;">
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ProductImage))
+                    {
+                        <img src="@Url.Content(item.ProductImage)" alt="@item.ProductName" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Resim yok</span>
+                    }
+                </td>
+                <td>@item.ProductName</td>
+                <td>
+                    <span class="badge-category-blueviolet">@item.Category.CategoryName</span>
+                </td>
+                <td>@item.ProductDescription</td>
+                <td>@item.ProductPrice TL</td>
+                <td style="color: @(item.ProductStatus ? "green" : "red"); font-weight: bold;">
+                    <span id="status-@item.ProductID">
+                        @(item.ProductStatus ? "Aktif" : "Pasif")
+                    </span>
+                    <br />
+                    <button class="btn btn-warning toggle-status action-btn mt-2" data-id="@item.ProductID">
+                        Değiştir
+                    </button>
+                </td>
+                <td>
+                    <form action="/Product/ProductEdit/@item.ProductID" method="post">
+                        <button class="btn btn-primary action-btn">
+                            Güncelle
+                        </button>
+                    </form>
+                    <button class="btn btn-danger delete-product action-btn" data-id="@item.ProductID">
+                        Sil
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Silme Onayı</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bu ürünü silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <!-- Corrected data-dismiss usage to trigger delete -->
+                <button type="button" id="confirmDeleteButton" class="btn btn-danger">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".toggle-status").click(function () {
+            var productId = $(this).data("id");
+            var statusSpan = $("#status-" + productId);
+
+            $.ajax({
+                url: "/Product/ToggleStatus",
+                type: "POST",
+                data: { id: productId },
+                success: function (response) {
+                    if (response.success) {
+                        if (response.newStatus) {
+                            statusSpan.text("Aktif").css("color", "green");
+                        } else {
+                            statusSpan.text("Pasif").css("color", "red");
+                        }
+                    } else {
+                        alert("Durum değiştirilemedi!");
+                    }
+                },
+                error: function () {
+                    alert("Bir hata oluştu!");
+                }
+            });
+        });
+
+
+        $(".delete-product").click(function () {
+            var productId = $(this).data("id");
+
+            $('#confirmDeleteModal').modal('show');
+
+            $("#confirmDeleteButton").off("click").on("click", function () {
+                $.ajax({
+                    url: "/Product/ProductDelete",
+                    type: "POST",
+                    data: { id: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            $("button[data-id='" + productId + "']").closest("tr").fadeOut();
+                            $('#confirmDeleteModal').modal('hide');
+                        } else {
+                            alert("Silme işlemi başarısız oldu!");
+                        }
+                    },
+                    error: function () {
+                        alert("Bir hata oluştu!");
+                    }
+                });
+            });
+        });
+
+    });
+</script>

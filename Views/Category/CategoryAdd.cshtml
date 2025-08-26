@@ -1,0 +1,49 @@
+﻿@model EntityLayer.Concrete.Category
+
+@{
+    ViewBag.Title = "Kategori Ekle";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+<link href="~/Styles/AdminStyle.css" rel="stylesheet" />
+
+<br />
+
+@using (Html.BeginForm("CategoryAdd", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.Label("Kategori Adı")
+        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori adını giriniz" })
+        @Html.ValidationMessageFor(x => x.CategoryName)
+        <br />
+        @Html.Label("Kategori Açıklaması")
+        @Html.TextAreaFor(x => x.CategoryDescription, new { @class = "form-control", placeholder = "Kategori açıklamasını giriniz" })
+        @Html.ValidationMessageFor(x => x.CategoryDescription)
+        <br />
+
+        @Html.Label("Kategori Resmi")
+        <input type="file" id="CategoryImage" name="CategoryImage" class="form-control" />
+        @Html.ValidationMessageFor(x => x.CategoryImage)
+        <br />
+
+        <div>
+            <label>Resim Önizleme:</label><br />
+            <img id="imagePreview" src="#" alt="Resim Önizlemesi" style="width: 300px; height: 300px; display: none; border:1px solid #ddd; padding:5px; margin-bottom:10px;" />
+        </div>
+    </div>
+
+    <button class="btn-custom">Kaydet</button>
+}
+
+<script>
+    document.getElementById('CategoryImage').addEventListener('change', function (e) {
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            var image = document.getElementById('imagePreview');
+            image.src = event.target.result;
+            image.style.display = 'block';
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+    });
+</script>
